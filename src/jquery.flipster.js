@@ -391,7 +391,7 @@
                     {
                         newClass += classes.itemFuture + ' ' +
                             classes.itemFuture + '-' + (i - _currentIndex);
-                        
+
                         zIndex = total -  (i - _currentIndex);
                     }
 
@@ -502,8 +502,8 @@
                 // Navigate directly to an item by clicking
                 if ( settings.click ) {
                     _items.on('click.flipster touchend.flipster', function (e) {
+                        e.preventDefault(); // This will stop messing with Chromes mobile emulation where both click and touch-events are running
                         if ( !_startDrag ) {
-                            if ( !$(this).hasClass(classes.itemCurrent) ) { e.preventDefault(); }
                             jump(this);
                         }
                     });
@@ -605,6 +605,7 @@
                             offsetX = x - _startDragX;
                             offsetY = y - _startDragY;
                             if (Math.abs(offsetX) > 30 && Math.abs(offsetY) < 100) {
+                                _startDrag = true;
                                 e.preventDefault();
                             }
                         },
@@ -612,6 +613,7 @@
                         'touchend.flipster touchcancel.flipster ': function () {
                             offsetX = x - _startDragX;
                             offsetY = y - _startDragY;
+                            _startDrag = false;
                             if (Math.abs(offsetX) > 30 && Math.abs(offsetY) < 100) {
                                 if (offsetX > 0) {
                                     jump('prev');
